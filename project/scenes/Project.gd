@@ -17,16 +17,22 @@ onready var _links := $Container/Flowsheet/Links as Control
 
 var DEBUG_LAST_LINK = null
 
+
 func _ready() -> void:
 	_partial_connection.visible = false
 
+
 func _set_mode(mode: int) -> void:
-	print("new mode is %d" % mode)
 	$EditActions.visible = (mode == EditorMode.EDIT)
-	# TODO: Go through every node and set its mode
+	for node in _nodes.get_children():
+		node.set_mode(mode)
+	for link in _links.get_children():
+		link.set_mode(mode)
+
 
 func refresh() -> void:
 	_propogate()
+
 
 func _propogate(changed_node = null) -> void:
 	if changed_node == null:
@@ -40,10 +46,11 @@ func _propogate(changed_node = null) -> void:
 		var child_node = _nodes.get_node(str(child_id))
 		_propogate(child_node)
 
+
 func _calculate_value(node: Control) -> void:
-	print("recalculating value for node %d" % node.node.id)
+#	print("recalculating value for node %d" % node.node.id)
 	var value = node.node.initial_value
-	print("starting value is %s" % str(value))
+#	print("starting value is %s" % str(value))
 	for link in _links.get_children():
 		if link.target_node == node:
 			var code: String = link.link.formula
@@ -62,13 +69,13 @@ func _calculate_value(node: Control) -> void:
 				print("Couldn't execute formula.\n%s" % expr.get_error_text())
 				continue
 			value = result
-			print("value is now %s" % str(value))
+#			print("value is now %s" % str(value))
 	node.set_value(value)
+
 
 func add_node(pos: Vector2) -> void:
 	var id: int = _next_node_id
 	_next_node_id += 1
-	print(id)
 	
 	var node_data := FlowNode.new()
 	node_data.id = id
@@ -88,10 +95,12 @@ func add_node(pos: Vector2) -> void:
 	
 	_graph.add_node(id)
 
+
 func delete_node(node: Control) -> void:
 	flowsheet.remove_node(node.node)
 	_graph.remove_node(node.node.id)
 	node.queue_free()
+
 
 func _start_connection(node: Control) -> void:
 	_partial_connection.visible = true
@@ -103,6 +112,7 @@ func _start_connection(node: Control) -> void:
 			continue
 		if not _graph.is_descendent_of(node.node.id, n.node.id):
 			n.prepare_for_connection()
+
 
 func _add_link(source_node: Control, target_node: Control) -> void:
 	var link_data := FlowLink.new()
@@ -123,12 +133,15 @@ func _add_link(source_node: Control, target_node: Control) -> void:
 	
 	DEBUG_LAST_LINK = link
 
+
 func _delete_link(link: Control) -> void:
 	link.queue_free()
+
 
 func _process(_delta: float) -> void:
 	if _partial_connection.visible:
 		_partial_connection.set_point_position(1, get_global_mouse_position() - canvas.rect_global_position)
+
 
 func _input(event: InputEvent) -> void:
 	if _partial_connection.visible and event.is_action_released("drag"):

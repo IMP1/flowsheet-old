@@ -58,24 +58,29 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 3 )
 
-[node name="ID" type="Label" parent="Edit"]
-anchor_bottom = 1.0
-margin_right = 22.0
-text = "1"
-align = 1
-valign = 1
-
-[node name="Value" type="LineEdit" parent="Edit"]
+[node name="InitialValue" type="SpinBox" parent="Edit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 22.0
 align = 1
-editable = false
-placeholder_text = "Value"
+
+[node name="Value" type="Panel" parent="Edit"]
+anchor_right = 1.0
+margin_left = 16.0
+margin_top = -24.0
+margin_right = -16.0
+
+[node name="Label" type="Label" parent="Edit/Value"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+align = 1
+valign = 1
 
 [node name="DragHandle" type="Button" parent="Edit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -21.0
+margin_bottom = -24.0
 mouse_default_cursor_shape = 13
 custom_styles/hover = SubResource( 4 )
 custom_styles/pressed = SubResource( 5 )
@@ -104,6 +109,7 @@ margin_bottom = 12.0
 custom_styles/panel = SubResource( 3 )
 
 [node name="Edit" type="Button" parent="Edit"]
+visible = false
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -116,57 +122,62 @@ text = "Edit"
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 22.0
+margin_top = 8.0
 margin_right = 94.0
-margin_bottom = 122.0
+margin_bottom = 80.0
+
+[node name="NodeInfo" type="Label" parent="Edit/EditMenu"]
+margin_right = 190.0
+margin_bottom = 14.0
+text = "Node ID: #"
 
 [node name="Type" type="HBoxContainer" parent="Edit/EditMenu"]
+margin_top = 18.0
 margin_right = 190.0
-margin_bottom = 30.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="Edit/EditMenu/Type"]
-margin_top = 8.0
+margin_top = 3.0
 margin_right = 93.0
-margin_bottom = 22.0
+margin_bottom = 17.0
 size_flags_horizontal = 3
 text = "Node Type"
 
 [node name="ChangeType" type="OptionButton" parent="Edit/EditMenu/Type"]
 margin_left = 97.0
 margin_right = 190.0
-margin_bottom = 30.0
+margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Integer"
 items = [ "Switch", null, false, 0, null, "Integer", null, false, 1, null, "Decimal", null, false, 2, null, "Percentage", null, false, 3, null, "Short Text", null, false, 4, null ]
 selected = 1
 
 [node name="InitialValue" type="HBoxContainer" parent="Edit/EditMenu"]
-margin_top = 34.0
+margin_top = 42.0
 margin_right = 190.0
-margin_bottom = 65.0
+margin_bottom = 56.0
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="Edit/EditMenu/InitialValue"]
-margin_top = 8.0
 margin_right = 93.0
-margin_bottom = 22.0
+margin_bottom = 14.0
 size_flags_horizontal = 3
 text = "Initial Value"
 
-[node name="Value" type="SpinBox" parent="Edit/EditMenu/InitialValue"]
+[node name="Value" type="Label" parent="Edit/EditMenu/InitialValue"]
 margin_left = 97.0
 margin_right = 190.0
-margin_bottom = 31.0
+margin_bottom = 14.0
 size_flags_horizontal = 3
+text = "0"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Edit/EditMenu"]
-margin_top = 69.0
+margin_top = 60.0
 margin_right = 190.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 grow_horizontal = 2
-grow_vertical = 0
 size_flags_vertical = 3
 custom_constants/separation = 32
 alignment = 1
@@ -174,14 +185,16 @@ alignment = 1
 [node name="Duplicate" type="Button" parent="Edit/EditMenu/HBoxContainer"]
 margin_left = 15.0
 margin_right = 88.0
-margin_bottom = 31.0
+margin_bottom = 20.0
+size_flags_vertical = 3
 disabled = true
 text = "Duplicate"
 
 [node name="Delete" type="Button" parent="Edit/EditMenu/HBoxContainer"]
 margin_left = 120.0
 margin_right = 175.0
-margin_bottom = 31.0
+margin_bottom = 20.0
+size_flags_vertical = 3
 text = "Delete"
 
 [node name="View" type="Control" parent="."]
@@ -189,6 +202,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="View"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Input" type="SpinBox" parent="View"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="Style" type="Control" parent="."]
 anchor_right = 1.0
@@ -200,11 +221,12 @@ script = ExtResource( 4 )
 [connection signal="moved_by" from="Edit" to="." method="_move_by"]
 [connection signal="moved_to" from="Edit" to="." method="_move_to"]
 [connection signal="type_changed" from="Edit" to="." method="_type_changed"]
+[connection signal="value_changed" from="Edit/InitialValue" to="Edit" method="_initial_value_set"]
 [connection signal="button_down" from="Edit/DragHandle" to="Edit" method="_drag"]
 [connection signal="button_up" from="Edit/DragHandle" to="Edit" method="_drop"]
+[connection signal="pressed" from="Edit/DragHandle" to="Edit" method="_toggle_edit_menu"]
 [connection signal="start_connection" from="Edit/ConnectOut" to="." method="_start_connection"]
 [connection signal="end_connection" from="Edit/ConnectIn" to="." method="_end_connection"]
 [connection signal="toggled" from="Edit/Edit" to="Edit" method="_toggle_edit_menu"]
 [connection signal="item_selected" from="Edit/EditMenu/Type/ChangeType" to="Edit" method="_new_type_selected"]
-[connection signal="value_changed" from="Edit/EditMenu/InitialValue/Value" to="Edit" method="_initial_value_set"]
 [connection signal="pressed" from="Edit/EditMenu/HBoxContainer/Delete" to="." method="_deleted"]

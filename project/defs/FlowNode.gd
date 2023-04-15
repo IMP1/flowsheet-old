@@ -11,6 +11,7 @@ export var accepts_input: bool = true
 
 var value = initial_value
 
+
 static func default_value(type: int):
 	match type:
 		Type.BOOL:
