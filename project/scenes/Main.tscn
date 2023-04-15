@@ -25,18 +25,21 @@ anchor_right = 1.0
 [node name="New" type="Button" parent="ProjectOptions"]
 margin_right = 40.0
 margin_bottom = 20.0
+disabled = true
 text = "New"
 
 [node name="Open" type="Button" parent="ProjectOptions"]
 margin_left = 44.0
 margin_right = 91.0
 margin_bottom = 20.0
+disabled = true
 text = "Open"
 
 [node name="Save" type="Button" parent="ProjectOptions"]
 margin_left = 95.0
 margin_right = 136.0
 margin_bottom = 20.0
+disabled = true
 text = "Save"
 
 [node name="Exit" type="Button" parent="ProjectOptions"]

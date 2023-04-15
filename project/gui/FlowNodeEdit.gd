@@ -11,7 +11,8 @@ var _is_being_dragged: bool = false
 var _pre_drag_position: Vector2
 
 onready var edit_menu := $EditMenu as Control
-onready var value_setter := $EditMenu/InitalValue as Control
+onready var value_setter := $EditMenu/InitialValue/Value as Control
+onready var value_setter_origin := $EditMenu/InitialValue/Label
 
 func _ready():
 	edit_menu.visible = false
@@ -42,7 +43,8 @@ func _toggle_edit_menu(open: bool) -> void:
 
 func _new_type_selected(option: int) -> void:
 	emit_signal("type_changed", option)
-	edit_menu.remove_child(value_setter)
+	var parent: Control = value_setter.get_parent()
+	parent.remove_child(value_setter)
 	match option:
 		FlowNode.Type.BOOL: # Switch
 			value_setter = CheckButton.new()
@@ -73,7 +75,8 @@ func _new_type_selected(option: int) -> void:
 			value_setter.connect("text_changed", self, "_initial_value_set")
 		_: # Other
 			print("INVALID NODE TYPE")
-	edit_menu.add_child_below_node($EditMenu/ChangeType, value_setter)
+	value_setter.size_flags_horizontal += SIZE_EXPAND
+	parent.add_child_below_node(value_setter_origin, value_setter)
 
 func _initial_value_set(value) -> void:
 	emit_signal("initial_value_changed", value)
