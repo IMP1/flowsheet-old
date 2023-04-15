@@ -61,9 +61,9 @@ func _new_type_selected(option: int) -> void:
 			value_setter.connect("value_changed", self, "_initial_value_set")
 		FlowNode.Type.PERCENTAGE: # Percentage
 			value_setter = HSlider.new()
-			value_setter.max_value = 100.0
-			value_setter.min_value = 1.0
-			value_setter.step = 1.0
+			value_setter.max_value = 1.0
+			value_setter.min_value = 0.0
+			value_setter.step = 0.01
 			value_setter.connect("value_changed", self, "_initial_value_set")
 		FlowNode.Type.SHORT_TEXT: # Short Text
 			value_setter = LineEdit.new()

@@ -2,7 +2,7 @@ extends Panel
 
 signal moved(new_position)
 signal deleted()
-signal type_changed(new_type)
+signal type_changed()
 signal initial_value_changed()
 signal start_connection()
 signal end_connection()
@@ -53,7 +53,7 @@ func _move_to(position: Vector2) -> void:
 func _type_changed(new_type: int) -> void:
 	node.type = new_type
 	node.initial_value = FlowNode.default_value(new_type)
-	emit_signal("type_changed", new_type)
+	emit_signal("type_changed")
 
 func _initial_value_changed(new_value) -> void:
 	node.initial_value = new_value
@@ -81,4 +81,18 @@ func set_input_node(val: bool) -> void:
 func set_value(value) -> void:
 	print("Setting value to %s" % str(value))
 	node.value = value
-	$Edit/Value.text = str(node.value)
+	var text: String
+	match node.type:
+		FlowNode.Type.BOOL: # Switch
+			text = "ON" if node.value else "OFF"
+		FlowNode.Type.INT: # Integer
+			text = str(node.value)
+		FlowNode.Type.DECIMAL: # Decimal
+			text = "%.2f" % node.value
+		FlowNode.Type.PERCENTAGE: # Percentage
+			text = "%.1f%%" % (node.value * 100.0)
+		FlowNode.Type.SHORT_TEXT: # Short Text
+			text = node.value
+		FlowNode.Type.LONG_TEXT: # Long Text
+			text = node.value
+	$Edit/Value.text = text

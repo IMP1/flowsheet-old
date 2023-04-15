@@ -78,7 +78,6 @@ func add_node(pos: Vector2) -> void:
 	node.name = str(id)
 	node.margin_left = pos.x
 	node.margin_top = pos.y
-	# TODO: Add node to flowsheet data resource
 	node.connect("deleted", self, "delete_node", [node])
 	node.connect("start_connection", self, "_start_connection", [node])
 	node.connect("end_connection", self, "_add_link")
@@ -125,7 +124,6 @@ func _delete_link(link: Control) -> void:
 
 func _process(_delta: float) -> void:
 	if _partial_connection.visible:
-		# TODO: Add snapping?
 		_partial_connection.set_point_position(1, get_global_mouse_position() - canvas.rect_global_position)
 
 func _input(event: InputEvent) -> void:

@@ -12,10 +12,11 @@ var source_node: Control
 var target_node: Control
 
 onready var line := $Edit/LineContainer/Line2D as Line2D
+onready var border_line := $Edit/LineContainer/Border as Line2D
 onready var edit_button := $Edit/Edit as Button
 onready var edit_menu := $Edit/EditMenu as Control
 
-# TODO: Draw a different colour if there is no formula (or if an invalid formula)
+# TODO: Draw a different colour line if there is no formula (or if an invalid formula)
 
 func _ready() -> void:
 	edit_menu.visible = false
@@ -39,10 +40,13 @@ func _refresh() -> void:
 	rect_position = middle_point
 	$Edit/LineContainer.rect_position = -middle_point
 	line.clear_points()
+	border_line.clear_points()
 	line.add_point(source_node.connection_point_out())
+	border_line.add_point(source_node.connection_point_out())
 	# TODO: Add elbow bends to make it look nicer
 	#       Change TARGET_NODE_LINE_INDEX when this happens
 	line.add_point(target_node.connection_point_in())
+	border_line.add_point(target_node.connection_point_in())
 
 func _source_node_moved(position: Vector2) -> void:
 	_refresh()

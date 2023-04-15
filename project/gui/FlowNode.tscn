@@ -68,7 +68,7 @@ placeholder_text = "Value"
 [node name="DragHandle" type="Button" parent="Edit"]
 anchor_bottom = 1.0
 margin_left = -20.0
-mouse_default_cursor_shape = 6
+mouse_default_cursor_shape = 13
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )
 custom_styles/focus = SubResource( 1 )

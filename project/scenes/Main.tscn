@@ -105,6 +105,8 @@ mouse_filter = 2
 
 [node name="PartialConnection" type="Line2D" parent="Project/Container/Flowsheet"]
 z_index = 10
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
 joint_mode = 2
 begin_cap_mode = 2
 
