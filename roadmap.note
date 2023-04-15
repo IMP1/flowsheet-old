@@ -12,8 +12,8 @@
   - [X] User can remove links between nodes
   - [X] User can edit a link's formula
   - [X] Flowsheet will recognise and forbit looping connections
-  - [ ] Flowsheet will evaluate results of link formulae, providing arguments for input and output values
-  - [ ] Flowsheet will cascade values along links when any node changes
+  - [X] Flowsheet will evaluate results of link formulae, providing arguments for input and output values
+  - [X] Flowsheet will cascade values along links when any node changes
 
 ## v0.2.0 - 'The Sheet'
 
