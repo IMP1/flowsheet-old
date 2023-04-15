@@ -122,10 +122,17 @@ margin_top = 24.0
 margin_right = 96.0
 margin_bottom = 48.0
 
-[node name="Delete" type="Button" parent="Edit/EditMenu"]
+[node name="Duplicate" type="Button" parent="Edit/EditMenu"]
 margin_top = 52.0
 margin_right = 96.0
 margin_bottom = 72.0
+disabled = true
+text = "Duplicate"
+
+[node name="Delete" type="Button" parent="Edit/EditMenu"]
+margin_top = 76.0
+margin_right = 96.0
+margin_bottom = 96.0
 text = "Delete"
 
 [node name="View" type="Control" parent="."]

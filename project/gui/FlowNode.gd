@@ -13,6 +13,9 @@ onready var _edit := $Edit as Control
 onready var _view := $View as Control
 onready var _style := $Style as Control
 
+# TODO: Change the layout. Remove the edit button, and have the edit menu show on right-click?
+# TODO: Make it more clear what the ChangeType and InitialValue fields are doing
+
 func _ready():
 	_set_mode(0)
 	$Edit/ID.text = str(node.id)

@@ -13,6 +13,7 @@ var target_node: Control
 
 onready var line := $Edit/LineContainer/Line2D as Line2D
 onready var border_line := $Edit/LineContainer/Border as Line2D
+onready var path := $Edit/LineContainer/Path2D as Path2D
 onready var edit_button := $Edit/Edit as Button
 onready var edit_menu := $Edit/EditMenu as Control
 
@@ -34,19 +35,22 @@ func set_connection(source: Control, target: Control) -> void:
 	_refresh()
 
 func _refresh() -> void:
-	var middle_point: Vector2 = source_node.connection_point_out()
-	middle_point += target_node.connection_point_in()
-	middle_point /= 2
-	rect_position = middle_point
-	$Edit/LineContainer.rect_position = -middle_point
+#	var middle_point: Vector2 = source_node.connection_point_out()
+#	middle_point += target_node.connection_point_in()
+#	middle_point /= 2
+#	rect_position = middle_point
+#	$Edit/LineContainer.rect_position = -middle_point
 	line.clear_points()
 	border_line.clear_points()
+	path.curve.clear_points()
 	line.add_point(source_node.connection_point_out())
 	border_line.add_point(source_node.connection_point_out())
+	path.curve.add_point(source_node.connection_point_out())
 	# TODO: Add elbow bends to make it look nicer
 	#       Change TARGET_NODE_LINE_INDEX when this happens
 	line.add_point(target_node.connection_point_in())
 	border_line.add_point(target_node.connection_point_in())
+	path.curve.add_point(target_node.connection_point_in())
 
 func _source_node_moved(position: Vector2) -> void:
 	_refresh()
@@ -63,3 +67,12 @@ func _node_deleted() -> void:
 
 func _delete() -> void:
 	emit_signal("deleted")
+
+func _process(_delta: float) -> void:
+	# TODO: Get rid of this, and check for mouse clicks on the line
+	#       https://godotengine.org/qa/80550/signal-for-onmouseenter-for-line2d
+	var mouse_pos := path.get_local_mouse_position()
+	var line_pos := path.curve.get_closest_point(mouse_pos)
+	var distance = (line_pos - mouse_pos).length()
+	if distance < 64 and distance > 24: 
+		edit_button.rect_position = line_pos
