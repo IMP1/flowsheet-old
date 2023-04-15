@@ -9,6 +9,8 @@ signal end_connection()
 
 export(Resource) var node
 
+var current_value
+
 onready var _edit := $Edit as Control
 onready var _view := $View as Control
 onready var _style := $Style as Control
@@ -20,6 +22,7 @@ func _ready():
 	$Edit/ConnectOut.node = self
 	$Edit/ConnectOut.accept_incoming = false
 	$Edit/ConnectIn.node = self
+	current_value = node.value
 
 func connection_point_out() -> Vector2:
 	return rect_position + $Edit/ConnectOut.rect_position + $Edit/ConnectOut.rect_size / 2
@@ -70,5 +73,14 @@ func prepare_for_connection() -> void:
 	$Edit/ConnectIn.highlight()
 
 func stop_connection() -> void:
+	yield(get_tree(), "idle_frame")
 	$Edit/ConnectIn.reset()
 	$Edit/ConnectOut.reset()
+
+func set_input_node(val: bool) -> void:
+	# TODO: This will be used in the VIEW mode
+	node.accepts_input = val
+
+func set_value(value) -> void:
+	current_value = value
+	print("Setting value to %s" % str(value))

@@ -1,6 +1,9 @@
 extends Control
 
 signal deleted()
+signal formula_changed()
+
+export(Resource) var link
 
 const SOURCE_NODE_LINE_INDEX = 0
 const TARGET_NODE_LINE_INDEX = 1
@@ -8,17 +11,15 @@ const TARGET_NODE_LINE_INDEX = 1
 var source_node: Control
 var target_node: Control
 
-# TODO: On source node deletion, queue_free
-# TODO: On target node deletion, queue_free
-
-# TODO: On source node moved, move this
-# TODO: On target node moved, move this
-
-onready var line := $Edit/Line2D as Line2D
+onready var line := $Edit/LineContainer/Line2D as Line2D
+onready var edit_button := $Edit/Edit as Button
 onready var edit_menu := $Edit/EditMenu as Control
 
 func _ready() -> void:
 	edit_menu.visible = false
+
+func _set_menu_visible(val: bool) -> void:
+	edit_menu.visible = val
 
 func set_connection(source: Control, target: Control) -> void:
 	source_node = source
@@ -30,16 +31,29 @@ func set_connection(source: Control, target: Control) -> void:
 	_refresh()
 
 func _refresh() -> void:
+	var middle_point: Vector2 = source_node.connection_point_out()
+	middle_point += target_node.connection_point_in()
+	middle_point /= 2
+	rect_position = middle_point
+	$Edit/LineContainer.rect_position = -middle_point
 	line.clear_points()
 	line.add_point(source_node.connection_point_out())
 	# TODO: Add elbow bends to make it look nicer
+	#       Change TARGET_NODE_LINE_INDEX when this happens
 	line.add_point(target_node.connection_point_in())
 
 func _source_node_moved(position: Vector2) -> void:
-	line.set_point_position(SOURCE_NODE_LINE_INDEX, source_node.connection_point_out())
+	_refresh()
 
 func _target_node_moved(position: Vector2) -> void:
-	line.set_point_position(TARGET_NODE_LINE_INDEX, target_node.connection_point_in())
+	_refresh()
+
+func _formula_changed(new_formula: String) -> void:
+	link.formula = new_formula
+	emit_signal("formula_changed")
 
 func _node_deleted() -> void:
+	emit_signal("deleted")
+
+func _delete() -> void:
 	emit_signal("deleted")

@@ -7,6 +7,7 @@ const LINK = preload("res://gui/FlowLink.tscn")
 
 var flowsheet: FlowSheet
 var _next_node_id: int = 1
+var _graph: DirectedAcyclicGraph = DirectedAcyclicGraph.new()
 
 onready var undo_stack := $UndoStack as Node
 onready var canvas := $Container/Flowsheet as Control
@@ -20,29 +21,67 @@ func _ready() -> void:
 func _set_mode(mode: int) -> void:
 	print("new mode is %d" % mode)
 	$EditActions.visible = (mode == EditorMode.EDIT)
-	# TODO: Go throw every node and set its mode
+	# TODO: Go through every node and set its mode
 
 func refresh() -> void:
 	_propogate()
 
-func _propogate() -> void:
-	pass
+func _propogate(changed_node = null) -> void:
+	if changed_node == null:
+		for id in _graph._root_nodes:
+			var node = _nodes.get_node(str(id))
+			print(node)
+			_propogate(node)
+		return
+	_calculate_value(changed_node)
+	for child in _graph.children(changed_node.node.id):
+		_propogate(child)
+
+func _calculate_value(node: Control) -> void:
+	print("recalculating value for node %d" % node.node.id)
+	var value = node.node.initial_value
+	print(value)
+	for link in _links.get_children():
+		if link.target_node == node:
+			var context := FormulaContext.new()
+			var expr := Expression.new()
+			var code: String = link.link.formula
+			var parse_result := expr.parse(code, ["IN", "OUT"])
+			if parse_result != OK:
+				print("Couldn't parse '%s' - %s" % [code, expr.get_error_text()])
+			value = expr.execute([link.source_node.current_value, value], context)
+			if expr.has_execute_failed():
+				print("ERROR :(")
+			print(value)
+	node.set_value(value)
 
 func add_node(pos: Vector2) -> void:
+	var id: int = _next_node_id
+	_next_node_id += 1
+	print(id)
+	
+	var node_data := FlowNode.new()
+	node_data.id = id
+	flowsheet.add_node(node_data, pos)
+	
 	var node: Control = NODE.instance()
-	node.node = FlowNode.new()
-	node.node.id = _next_node_id
-	flowsheet.add_node(node.node, pos)
+	node.node = node_data
 	_nodes.add_child(node)
+	node.name = str(id)
 	node.margin_left = pos.x
 	node.margin_top = pos.y
-	_next_node_id += 1
 	# TODO: Add node to flowsheet data resource
 	node.connect("deleted", self, "delete_node", [node])
 	node.connect("start_connection", self, "_start_connection", [node])
-	node.connect("end_connection", self, "_end_connection")
+	node.connect("end_connection", self, "_add_link")
+	node.connect("initial_value_changed", self, "_propogate", [node])
+	node.connect("type_changed", self, "_propogate", [node])
+	
+	_graph.add_node(id)
 
 func delete_node(node: Control) -> void:
+	flowsheet.remove_node(node.node)
+	_graph.remove_node(node.node.id)
 	node.queue_free()
 
 func _start_connection(node: Control) -> void:
@@ -53,15 +92,25 @@ func _start_connection(node: Control) -> void:
 	for n in _nodes.get_children():
 		if node == n:
 			continue
-		print(n)
-		n.prepare_for_connection()
+		if not _graph.is_descendent_of(node.node.id, n.node.id):
+			n.prepare_for_connection()
 
-func _end_connection(source_node: Control, target_node: Control) -> void:
+func _add_link(source_node: Control, target_node: Control) -> void:
+	var link_data := FlowLink.new()
+	link_data.source_id = source_node.node.id
+	link_data.target_id = target_node.node.id
+	link_data.target_ordering = 0 # TODO: Get this somehow
+	flowsheet.add_link(link_data)
+	
 	var link: Control = LINK.instance()
 	_links.add_child(link)
+	link.link = link_data
 	link.set_connection(source_node, target_node)
 	link.connect("deleted", self, "_delete_link", [link])
-	print("ended connection")
+	link.connect("formula_changed", self, "_propogate", [target_node])
+	
+	_graph.connect_nodes(source_node.node.id, target_node.node.id)
+	target_node.set_input_node(false)
 
 func _delete_link(link: Control) -> void:
 	link.queue_free()
@@ -76,3 +125,5 @@ func _input(event: InputEvent) -> void:
 		_partial_connection.visible = false
 		for n in _nodes.get_children():
 			n.stop_connection()
+	if event.is_action_pressed("ui_focus_next"):
+		_graph.dump()

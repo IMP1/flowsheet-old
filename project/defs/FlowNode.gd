@@ -5,7 +5,7 @@ enum Type { BOOL, INT, DECIMAL, PERCENTAGE, SHORT_TEXT, LONG_TEXT }
 
 export var id: int
 export var name: String = ""
-export var initial_value = []
+export var initial_value = 0
 export var type: int = Type.INT
 export var accepts_input: bool = true
 

@@ -103,6 +103,8 @@ margin_bottom = 40.0
 
 [node name="PartialConnection" type="Line2D" parent="Project/Container/Flowsheet"]
 z_index = 10
+joint_mode = 2
+begin_cap_mode = 2
 
 [node name="EditActions" type="VBoxContainer" parent="Project"]
 anchor_bottom = 1.0

@@ -11,23 +11,34 @@ script = ExtResource( 1 )
 margin_right = 40.0
 margin_bottom = 40.0
 
-[node name="Line2D" type="Line2D" parent="Edit"]
+[node name="LineContainer" type="Control" parent="Edit"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Line2D" type="Line2D" parent="Edit/LineContainer"]
 
 [node name="Edit" type="Button" parent="Edit"]
 margin_right = 12.0
 margin_bottom = 20.0
+toggle_mode = true
+text = "Edit"
 
 [node name="EditMenu" type="VBoxContainer" parent="Edit"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_top = 25.0
+margin_right = 124.0
+margin_bottom = 73.0
 
 [node name="Formula" type="LineEdit" parent="Edit/EditMenu"]
-margin_right = 58.0
+margin_right = 124.0
 margin_bottom = 24.0
 placeholder_text = "Formula"
 
 [node name="Delete" type="Button" parent="Edit/EditMenu"]
 margin_top = 28.0
-margin_right = 58.0
+margin_right = 124.0
 margin_bottom = 48.0
 text = "Delete"
+
+[connection signal="toggled" from="Edit/Edit" to="." method="_set_menu_visible"]
+[connection signal="text_entered" from="Edit/EditMenu/Formula" to="." method="_formula_changed"]
+[connection signal="pressed" from="Edit/EditMenu/Delete" to="." method="_delete"]
