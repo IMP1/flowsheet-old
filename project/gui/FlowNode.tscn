@@ -38,7 +38,7 @@ corner_radius_bottom_left = 12
 [node name="FlowNode" type="Panel"]
 margin_right = 96.0
 margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
+rect_min_size = Vector2( 96, 32 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
@@ -47,6 +47,8 @@ script = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 3 )
 
 [node name="ID" type="Label" parent="Edit"]
@@ -56,13 +58,12 @@ text = "1"
 align = 1
 valign = 1
 
-[node name="Name" type="LineEdit" parent="Edit"]
+[node name="Value" type="LineEdit" parent="Edit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 22.0
-text = "Node #1"
 align = 1
-placeholder_text = "Name"
+placeholder_text = "Value"
 
 [node name="DragHandle" type="Button" parent="Edit"]
 anchor_bottom = 1.0
@@ -149,4 +150,5 @@ script = ExtResource( 4 )
 [connection signal="end_connection" from="Edit/ConnectIn" to="." method="_end_connection"]
 [connection signal="toggled" from="Edit/Edit" to="Edit" method="_toggle_edit_menu"]
 [connection signal="item_selected" from="Edit/EditMenu/ChangeType" to="Edit" method="_new_type_selected"]
+[connection signal="value_changed" from="Edit/EditMenu/InitalValue" to="Edit" method="_initial_value_set"]
 [connection signal="pressed" from="Edit/EditMenu/Delete" to="." method="_deleted"]

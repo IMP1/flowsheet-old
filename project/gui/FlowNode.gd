@@ -3,13 +3,11 @@ extends Panel
 signal moved(new_position)
 signal deleted()
 signal type_changed(new_type)
-signal initial_value_changed(new_value)
+signal initial_value_changed()
 signal start_connection()
 signal end_connection()
 
 export(Resource) var node
-
-var current_value
 
 onready var _edit := $Edit as Control
 onready var _view := $View as Control
@@ -18,11 +16,10 @@ onready var _style := $Style as Control
 func _ready():
 	_set_mode(0)
 	$Edit/ID.text = str(node.id)
-	$Edit/Name.text = str("Node #%d" % node.id)
+	$Edit/Value.text = str(node.value)
 	$Edit/ConnectOut.node = self
 	$Edit/ConnectOut.accept_incoming = false
 	$Edit/ConnectIn.node = self
-	current_value = node.value
 
 func connection_point_out() -> Vector2:
 	return rect_position + $Edit/ConnectOut.rect_position + $Edit/ConnectOut.rect_size / 2
@@ -61,7 +58,7 @@ func _type_changed(new_type: int) -> void:
 func _initial_value_changed(new_value) -> void:
 	node.initial_value = new_value
 	print("new value is " + str(new_value))
-	emit_signal("initial_value_changed", new_value)
+	emit_signal("initial_value_changed")
 
 func _start_connection() -> void:
 	emit_signal("start_connection")
@@ -82,5 +79,6 @@ func set_input_node(val: bool) -> void:
 	node.accepts_input = val
 
 func set_value(value) -> void:
-	current_value = value
 	print("Setting value to %s" % str(value))
+	node.value = value
+	$Edit/Value.text = str(node.value)

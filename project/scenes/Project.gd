@@ -34,25 +34,33 @@ func _propogate(changed_node = null) -> void:
 			_propogate(node)
 		return
 	_calculate_value(changed_node)
-	for child in _graph.children(changed_node.node.id):
-		_propogate(child)
+	for child_id in _graph.children(changed_node.node.id):
+		var child_node = _nodes.get_node(str(child_id))
+		_propogate(child_node)
 
 func _calculate_value(node: Control) -> void:
 	print("recalculating value for node %d" % node.node.id)
 	var value = node.node.initial_value
-	print(value)
+	print("starting value is %s" % str(value))
 	for link in _links.get_children():
 		if link.target_node == node:
+			var code: String = link.link.formula
+			if code.empty():
+				continue
 			var context := FormulaContext.new()
 			var expr := Expression.new()
-			var code: String = link.link.formula
 			var parse_result := expr.parse(code, ["IN", "OUT"])
 			if parse_result != OK:
-				print("Couldn't parse '%s' - %s" % [code, expr.get_error_text()])
-			value = expr.execute([link.source_node.current_value, value], context)
+				# TODO: Communicate this error to the user
+				print("Couldn't parse formula '%s'.\n%s" % [code, expr.get_error_text()])
+				continue
+			var result = expr.execute([link.source_node.node.value, value], context)
 			if expr.has_execute_failed():
-				print("ERROR :(")
-			print(value)
+				# TODO: Communicate this error to the user
+				print("Couldn't execute formula.\n%s" % expr.get_error_text())
+				continue
+			value = result
+			print("value is now %s" % str(value))
 	node.set_value(value)
 
 func add_node(pos: Vector2) -> void:

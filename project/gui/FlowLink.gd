@@ -15,6 +15,8 @@ onready var line := $Edit/LineContainer/Line2D as Line2D
 onready var edit_button := $Edit/Edit as Button
 onready var edit_menu := $Edit/EditMenu as Control
 
+# TODO: Draw a different colour if there is no formula (or if an invalid formula)
+
 func _ready() -> void:
 	edit_menu.visible = false
 
