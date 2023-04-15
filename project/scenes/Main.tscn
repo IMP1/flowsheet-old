@@ -1,0 +1,128 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://styles/edit_mode.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/Main.gd" type="Script" id=2]
+[ext_resource path="res://scenes/Project.gd" type="Script" id=3]
+
+[sub_resource type="ButtonGroup" id=1]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="ProjectOptions" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+
+[node name="New" type="Button" parent="ProjectOptions"]
+margin_right = 40.0
+margin_bottom = 20.0
+text = "New"
+
+[node name="Open" type="Button" parent="ProjectOptions"]
+margin_left = 44.0
+margin_right = 91.0
+margin_bottom = 20.0
+text = "Open"
+
+[node name="Save" type="Button" parent="ProjectOptions"]
+margin_left = 95.0
+margin_right = 136.0
+margin_bottom = 20.0
+text = "Save"
+
+[node name="Exit" type="Button" parent="ProjectOptions"]
+margin_left = 140.0
+margin_right = 175.0
+margin_bottom = 20.0
+text = "Exit"
+
+[node name="Project" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 28.0
+script = ExtResource( 3 )
+
+[node name="ModeOptions" type="HBoxContainer" parent="Project"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -64.5
+margin_right = 64.5
+margin_bottom = 40.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="Edit" type="Button" parent="Project/ModeOptions"]
+margin_right = 36.0
+margin_bottom = 40.0
+toggle_mode = true
+pressed = true
+group = SubResource( 1 )
+text = "Edit"
+
+[node name="View" type="Button" parent="Project/ModeOptions"]
+margin_left = 40.0
+margin_right = 82.0
+margin_bottom = 40.0
+toggle_mode = true
+group = SubResource( 1 )
+text = "View"
+
+[node name="Style" type="Button" parent="Project/ModeOptions"]
+margin_left = 86.0
+margin_right = 129.0
+margin_bottom = 40.0
+toggle_mode = true
+group = SubResource( 1 )
+text = "Style"
+
+[node name="Container" type="ScrollContainer" parent="Project"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 17.0
+margin_top = 54.0
+margin_right = -19.0
+margin_bottom = -22.0
+follow_focus = true
+
+[node name="Flowsheet" type="Control" parent="Project/Container"]
+margin_right = 988.0
+margin_bottom = 496.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+
+[node name="Nodes" type="Control" parent="Project/Container/Flowsheet"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Links" type="Control" parent="Project/Container/Flowsheet"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="PartialConnection" type="Line2D" parent="Project/Container/Flowsheet"]
+z_index = 10
+
+[node name="EditActions" type="VBoxContainer" parent="Project"]
+anchor_bottom = 1.0
+margin_left = 36.0
+margin_top = 77.0
+margin_right = 141.0
+margin_bottom = -37.0
+
+[node name="AddNode" type="Button" parent="Project/EditActions"]
+margin_right = 105.0
+margin_bottom = 20.0
+text = "Add Node"
+
+[node name="UndoStack" type="Node" parent="Project"]
+
+[connection signal="pressed" from="ProjectOptions/New" to="." method="_new_project"]
+[connection signal="pressed" from="ProjectOptions/Open" to="." method="_open_project"]
+[connection signal="pressed" from="ProjectOptions/Save" to="." method="_save_project"]
+[connection signal="pressed" from="ProjectOptions/Exit" to="." method="_exit"]
+[connection signal="pressed" from="Project/ModeOptions/Edit" to="Project" method="_set_mode" binds= [ 0 ]]
+[connection signal="pressed" from="Project/ModeOptions/View" to="Project" method="_set_mode" binds= [ 1 ]]
+[connection signal="pressed" from="Project/ModeOptions/Style" to="Project" method="_set_mode" binds= [ 2 ]]
+[connection signal="pressed" from="Project/EditActions/AddNode" to="Project" method="add_node" binds= [ Vector2( 192, 32 ) ]]

@@ -1,0 +1,88 @@
+# Flowsheet
+
+Thinking about a RPG character sheet tool (maybe more generally useful)
+
+
+Nodes (and collections of nodes)
+That can be Inputs (eg of numbers: str, dex, agi, con, cha, wis, int)
+Nodes can be boolean Inputs (toggle buttons - does this skill have proficiency)
+
+Output nodes are used to calculate values. They can have optional initial values.
+
+Then you can link Nodes (both input or output) to output nodes, changing or overwriting them
+
+Links can use the source values, and previous target values, to manipulate the resulting value.
+These links can also have formulae (like out+2, or like floor((in-10)/2), etc.)
+
+if multiple links go into an output node, you can order them, and they apply in that order
+
+This feels like the basics of a spreadsheet, specialised, conceptualised as connections, rather than cells
+
+To make it more generally useful, it would need a way of working across multiple nodes
+
+Output nodes can be hidden
+
+
+
+TEST mode, where you can input numbers and toggle switches, and see the results
+EDIT mode, where you can see, and edit, and reorder, the connections between nodes, as well as edit the nodes themselves
+STYLE mode, where you can move around nodes, group them, and provide colours, sizes, fonts, etc.
+
+
+Export to a static HTML page (generate the javascript to handle the connections, use semantic tags obvs, could be fun?)
+Export to a tres (just to test importing)
+Export to a JSON/XML/TOML - Something standardised that can be shared and makes sense on its own, textually
+
+
+
+Make it in Godot, I guess.
+
+------
+
+# Label formulae
+
+ADD MINUS MULTIPLY DIVIDE POWER
+
+CONCAT REPLACE
+
+IF
+
+REDUCE MAP FILTER
+
+------
+
+# Features
+
+## Core
+
+  * Drag and drop mechanic for moving nodes around in STYLE (and EDIT) mode
+  * View different things in different modes (but in same place / make sure it's clear what is the same node)
+  * Add and remove nodes in EDIT mode
+  * Add and remove link in EDIT mode
+  * Edit nodes (their input type if any, their default value if any, their names if any) in EDIT mode
+  * Edit links (their target, their source, their formula, their place in the ordering for the target node) in EDIT
+  * Changing values in TEST mode, and seeing the values cascade and update in real-time.
+
+## Advanced
+
+  * Changing position of nodes in STYLE mode
+  * Changing colour/font/size of nodes in STYLE mode
+  * Export
+  * Import
+
+## Optional
+
+  * Syntax highlighting for Link Formulae
+  * Node Group Templates (add an *attack* in a D&D stylesheet, and popuplate it with fields, and connect certain bits up automatically?)
+    This is functionality that defo goes above and beyond. And would require additional functionality (buttons and actions). OUT OF SCOPE
+  * An option to duplicate a node in EDIT mode, this would also duplicate connections across to the new copy
+
+
+
+------
+
+# Example Usage
+
+D&D character sheet, with initial attributes put in (STR, DEX, etc.)
+And options for proficiency in skills
+And then cascading values for stuff

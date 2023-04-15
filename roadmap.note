@@ -1,0 +1,83 @@
+# Roadmap
+
+## v0.1.0 - 'The Flow'
+
+  - [X] User can add nodes
+  - [X] User can remove nodes
+  - [X] User can move nodes
+  - [X] User can edit a node's 'type' (bool, int, percentage, string, list)
+  - [X] User can set a node's initial value
+  - [X] User can add links between nodes
+  - [X] Flowsheet will remove links when a node is deleted
+  - [ ] User can remove links between nodes
+  - [ ] User can edit a link's formula
+  - [ ] Flowsheet will evaluate results of link formulae, providing 
+  - [ ] Flowsheet will cascade values along links when any node changes
+
+## v0.2.0 - 'The Sheet'
+
+  - [ ] User can set a node to allow input in test mode
+  - [ ] Flowsheet has TEST/VIEW mode
+      - [ ] User cannot add/remove/move/edit nodes
+      - [ ] User cannot see/add/remove/edit links
+      - [ ] Users can input values to nodes that allow it
+  - [ ] Flowsheet allows multiple possible incoming links to a node
+  - [ ] User can re-order incoming links to a node
+  - [ ] User can scroll/pan around the flowsheet
+  - [ ] Flowsheet will expand the flowsheet as needed when the user pans around
+
+## v0.3.0 - "Persistence"
+
+  - [ ] Flowsheet saves nodes' positions and sizes
+  - [ ] User can save a flowsheet to storage
+  - [ ] User can open a flowsheet from storage
+  - [ ] User can export a flowsheet to HTML/JS/CSS
+  - [ ] User can create new empty flowsheets
+
+## v0.4.0 - "Control"
+
+  - [ ] User can undo and redo actions
+  - [ ] Flowsheet displays a (toggleable) minimap of the flowsheet in all views
+
+## v0.5.0 - "Style"
+
+  - [ ] User can define a theme for their flowsheet
+      - [ ] Users can set text colour
+      - [ ] Users can set background colour / texture
+      - [ ] Users can set fonts
+      - [ ] ?? What else? ??
+  - [ ] Users can set styles for individual nodes, overriding the theme
+  - [ ] Flowsheet uses the user's theme in TEST/VIEW mode
+  - [ ] Flowsheet communicates the user's theme in STYLE move
+  - [ ] Flowsheet saves the style information along with flowsheets
+
+## v0.6.0 - "Safety"
+
+  - [ ] Flowsheet uses a sandboxed, safe formula language
+
+## v1.0.0 - "Flowsheet"
+
+  - [ ] Flowsheet offers light and dark themes for EDIT mode, and STYLE mode elements
+  - [ ] Flowsheet offers a default theme for VIEW/TEXT mode
+  - [ ] Flowsheet has an about page including a version number, and a link to the Github page
+  - [ ] Flowsheet remembers which project the user had open last, and will open it on loading
+  - [ ] 
+
+# Known Issues
+
+  - [ ] Edit menu for a node is drawn underneath other control elements (either need to be a canvas layer or dynamically created in a menu layer of the canvas...)
+
+
+# Bonus Extras
+
+  * Flowsheet shows syntax highlighting for link formulae
+  * User can duplicate a node in EDIT mode, this would also duplicate connections across to the new copy
+  * User can add BUTTON nodes, which can edit the flowsheet
+  * User can define 'Node Group Templates' 
+    (Use Case: add an 'Attack' in a D&D stylesheet, and popuplate it with fields, and connect certain bits up automatically?)
+  * Users can group nodes stylistically, allowing for easier styling of multiple nodes
+  * Users can group nodes functionally, allowing for their values to be collected into a list, or otherwise combined
+    This is possible without this, but less convenient
+  * 
+
+
