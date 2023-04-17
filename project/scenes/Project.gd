@@ -15,8 +15,6 @@ onready var _partial_connection := $Container/Flowsheet/PartialConnection as Lin
 onready var _nodes := $Container/Flowsheet/Nodes as Control
 onready var _links := $Container/Flowsheet/Links as Control
 
-var DEBUG_LAST_LINK = null
-
 
 func _ready() -> void:
 	_partial_connection.visible = false
@@ -38,7 +36,6 @@ func _propogate(changed_node = null) -> void:
 	if changed_node == null:
 		for id in _graph._root_nodes:
 			var node = _nodes.get_node(str(id))
-			print(node)
 			_propogate(node)
 		return
 	_calculate_value(changed_node)
@@ -130,8 +127,6 @@ func _add_link(source_node: Control, target_node: Control) -> void:
 	
 	_graph.connect_nodes(source_node.node.id, target_node.node.id)
 	target_node.set_input_node(false)
-	
-	DEBUG_LAST_LINK = link
 
 
 func _delete_link(link: Control) -> void:

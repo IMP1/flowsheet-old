@@ -2,6 +2,7 @@ extends Control
 
 signal type_changed(new_type)
 signal initial_value_changed(new_value)
+signal editable_changed(new_value)
 signal moved_by(movement)
 signal moved_to(position)
 
@@ -12,7 +13,7 @@ var _pre_drag_position: Vector2
 
 onready var edit_menu := $EditMenu as Control
 onready var value_setter := $InitialValue as Control
-onready var value_setter_origin := $EditMenu/InitialValue/Label
+onready var edit_menu_initial_value := $EditMenu/InitialValue/Value as Label
 
 
 func _ready():
@@ -89,10 +90,11 @@ func _new_type_selected(new_type: int) -> void:
 	value_setter.anchor_bottom = 1.0
 	parent.add_child(value_setter)
 	parent.move_child(value_setter, 0)
-	$EditMenu/InitialValue/Value.text = str(FlowNode.default_value(new_type))
+	edit_menu_initial_value.text = str(FlowNode.default_value(new_type))
 
 
 func _initial_value_set(value) -> void:
+	emit_signal("initial_value_changed", value)
 	var text: String
 	match get_parent().node.type:
 		FlowNode.Type.BOOL: # Switch
@@ -104,9 +106,12 @@ func _initial_value_set(value) -> void:
 		FlowNode.Type.PERCENTAGE: # Percentage
 			text = "%.1f%%" % (value * 100.0)
 		FlowNode.Type.SHORT_TEXT: # Short Text
-			text = value
+			text = str(value)
 		FlowNode.Type.LONG_TEXT: # Long Text
-			text = value
-	$EditMenu/InitialValue/Value.text = text
-	emit_signal("initial_value_changed", value)
+			text = str(value)
+	edit_menu_initial_value.text = text
+
+
+func _set_allow_inputs(value: bool) -> void:
+	emit_signal("editable_changed", value)
 

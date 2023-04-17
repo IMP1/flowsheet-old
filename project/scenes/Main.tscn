@@ -135,6 +135,12 @@ margin_right = 75.0
 margin_bottom = 20.0
 text = "Add Node"
 
+[node name="Recalculate" type="Button" parent="Project/EditActions"]
+margin_left = 79.0
+margin_right = 210.0
+margin_bottom = 20.0
+text = "Recalculate Values"
+
 [node name="UndoStack" type="Node" parent="Project"]
 
 [connection signal="pressed" from="ProjectOptions/New" to="." method="_new_project"]
@@ -145,3 +151,4 @@ text = "Add Node"
 [connection signal="pressed" from="Project/ModeOptions/View" to="Project" method="_set_mode" binds= [ 1 ]]
 [connection signal="pressed" from="Project/ModeOptions/Style" to="Project" method="_set_mode" binds= [ 2 ]]
 [connection signal="pressed" from="Project/EditActions/AddNode" to="Project" method="add_node" binds= [ Vector2( 192, 32 ) ]]
+[connection signal="pressed" from="Project/EditActions/Recalculate" to="Project" method="_propogate"]

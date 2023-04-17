@@ -27,16 +27,16 @@ func highlight() -> void:
 	accept_incoming = true
 
 
-func get_drag_data(position):
+func get_drag_data(_position):
 	emit_signal("start_connection")
 	_previous_border_colour = panel.border_color
 	panel.border_color = highlight_colour
 	return node
 
 
-func can_drop_data(position, data):
+func can_drop_data(_position, data):
 	return accept_incoming and (data != node)
 
 
-func drop_data(position, data):
+func drop_data(_position, data):
 	emit_signal("end_connection", data, node)

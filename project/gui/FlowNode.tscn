@@ -108,17 +108,8 @@ margin_right = -8.0
 margin_bottom = 12.0
 custom_styles/panel = SubResource( 3 )
 
-[node name="Edit" type="Button" parent="Edit"]
-visible = false
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -2.0
-margin_bottom = 20.0
-toggle_mode = true
-text = "Edit"
-
 [node name="EditMenu" type="VBoxContainer" parent="Edit"]
+visible = false
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -131,10 +122,31 @@ margin_right = 190.0
 margin_bottom = 14.0
 text = "Node ID: #"
 
-[node name="Type" type="HBoxContainer" parent="Edit/EditMenu"]
+[node name="Editable" type="HBoxContainer" parent="Edit/EditMenu"]
 margin_top = 18.0
 margin_right = 190.0
-margin_bottom = 38.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Edit/EditMenu/Editable"]
+margin_top = 5.0
+margin_right = 93.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Editable"
+
+[node name="Value" type="CheckBox" parent="Edit/EditMenu/Editable"]
+margin_left = 97.0
+margin_right = 190.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+pressed = true
+
+[node name="Type" type="HBoxContainer" parent="Edit/EditMenu"]
+margin_top = 46.0
+margin_right = 190.0
+margin_bottom = 66.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -155,9 +167,9 @@ items = [ "Switch", null, false, 0, null, "Integer", null, false, 1, null, "Deci
 selected = 1
 
 [node name="InitialValue" type="HBoxContainer" parent="Edit/EditMenu"]
-margin_top = 42.0
+margin_top = 70.0
 margin_right = 190.0
-margin_bottom = 56.0
+margin_bottom = 84.0
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="Edit/EditMenu/InitialValue"]
@@ -174,9 +186,9 @@ size_flags_horizontal = 3
 text = "0"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Edit/EditMenu"]
-margin_top = 60.0
+margin_top = 88.0
 margin_right = 190.0
-margin_bottom = 80.0
+margin_bottom = 108.0
 grow_horizontal = 2
 size_flags_vertical = 3
 custom_constants/separation = 32
@@ -206,17 +218,22 @@ script = ExtResource( 2 )
 [node name="Label" type="Label" parent="View"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+text = "0"
+align = 1
+valign = 1
 
 [node name="Input" type="SpinBox" parent="View"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Style" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 4 )
 
+[connection signal="editable_changed" from="Edit" to="." method="_editable_changed"]
 [connection signal="initial_value_changed" from="Edit" to="." method="_initial_value_changed"]
 [connection signal="moved_by" from="Edit" to="." method="_move_by"]
 [connection signal="moved_to" from="Edit" to="." method="_move_to"]
@@ -227,6 +244,7 @@ script = ExtResource( 4 )
 [connection signal="pressed" from="Edit/DragHandle" to="Edit" method="_toggle_edit_menu"]
 [connection signal="start_connection" from="Edit/ConnectOut" to="." method="_start_connection"]
 [connection signal="end_connection" from="Edit/ConnectIn" to="." method="_end_connection"]
-[connection signal="toggled" from="Edit/Edit" to="Edit" method="_toggle_edit_menu"]
+[connection signal="toggled" from="Edit/EditMenu/Editable/Value" to="Edit" method="_set_allow_inputs"]
 [connection signal="item_selected" from="Edit/EditMenu/Type/ChangeType" to="Edit" method="_new_type_selected"]
 [connection signal="pressed" from="Edit/EditMenu/HBoxContainer/Delete" to="." method="_deleted"]
+[connection signal="value_changed" from="View/Input" to="Edit" method="_initial_value_set"]

@@ -13,9 +13,6 @@ onready var _edit := $Edit as Control
 onready var _view := $View as Control
 onready var _style := $Style as Control
 
-# TODO: Change the layout. Remove the edit button, and have the edit menu show on right-click?
-# TODO: Make it more clear what the ChangeType and InitialValue fields are doing
-
 
 func _ready():
 	set_mode(0)
@@ -24,6 +21,7 @@ func _ready():
 	$Edit/ConnectOut.node = self
 	$Edit/ConnectOut.accept_incoming = false
 	$Edit/ConnectIn.node = self
+	_edit._new_type_selected(node.type)
 
 
 func connection_point_out() -> Vector2:
@@ -74,9 +72,16 @@ func _type_changed(new_type: int) -> void:
 
 
 func _initial_value_changed(new_value) -> void:
+	print("initial value changed for node #%d" % node.id)
 	node.initial_value = new_value
-	print("new value is " + str(new_value))
 	emit_signal("initial_value_changed")
+	_view.input.value = new_value # TODO: This won't work with all node types
+	_edit.value_setter.value = new_value # TODO: This won't work with all node types
+
+
+func _editable_changed(new_value: bool) -> void:
+	node.accepts_input = new_value
+	_view._set_editable(new_value)
 
 
 func _start_connection() -> void:
@@ -97,14 +102,7 @@ func stop_connection() -> void:
 	$Edit/ConnectOut.reset()
 
 
-func set_input_node(val: bool) -> void:
-	# TODO: This will be used in the VIEW mode
-	node.accepts_input = val
-
-
 func set_value(value) -> void:
-	print("Setting value to %s" % str(value))
-	print("Type is %s" % typeof(value))
 	node.value = value
 	$Edit/Value/Label.text = str(value)
 	_view.set_value(value)

@@ -24,22 +24,20 @@ margin_right = 40.0
 margin_bottom = 40.0
 mouse_filter = 2
 
-[node name="Line2D" type="Line2D" parent="Edit/LineContainer"]
-width = 2.0
-default_color = Color( 1, 1, 1, 1 )
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
-antialiased = true
-
 [node name="Border" type="Line2D" parent="Edit/LineContainer"]
-z_index = -10
 width = 6.0
 default_color = Color( 0, 0, 0, 1 )
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 antialiased = true
+
+[node name="Line2D" type="Line2D" parent="Edit/LineContainer"]
+width = 2.0
+default_color = Color( 1, 1, 1, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="Path2D" type="Path2D" parent="Edit/LineContainer"]
 curve = SubResource( 1 )

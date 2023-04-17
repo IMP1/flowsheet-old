@@ -17,14 +17,15 @@
 
 ## v0.2.0 - 'The Sheet'
 
-  - [ ] User can set a node to allow input in test mode
-  - [ ] Flowsheet has TEST/VIEW mode
-      - [ ] User cannot add/remove/move/edit nodes
-      - [ ] User cannot see/add/remove/edit links
-      - [ ] Users can input values to nodes that allow it
-  - [ ] Flowsheet allows multiple possible incoming links to a node
+  - [X] User can set a node to allow input in test mode
+  - [X] Flowsheet has TEST/VIEW mode
+      - [X] User cannot add/remove/move/edit nodes
+      - [X] User cannot see/add/remove/edit links
+      - [X] Users can input values to nodes that allow it
+  - [X] Flowsheet allows multiple possible incoming links to a node
   - [ ] User can re-order incoming links to a node
   - [ ] User can scroll/pan around the flowsheet
+  - [ ] User can hide/show connections from/to connection points
   - [ ] Flowsheet will expand the flowsheet as needed when the user pans around
 
 ## v0.3.0 - "Persistence"
@@ -39,9 +40,11 @@
 
   - [ ] User can undo and redo actions
   - [ ] Flowsheet displays a (toggleable) minimap of the flowsheet in all views
+  - [ ] Flowsheet has a toggleable grid, which nodes will (optionally) snap to in EDIT and STYLE mode (both position and size)
 
 ## v0.5.0 - "Style"
 
+  - [ ] User can set a node, in EDIT or STYLE mode, for that node to be hidden in VIEW mode
   - [ ] User can define a theme for their flowsheet
       - [ ] Users can set text colour
       - [ ] Users can set background colour / texture
