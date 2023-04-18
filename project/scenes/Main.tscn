@@ -1,8 +1,18 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://styles/edit_mode.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/Main.gd" type="Script" id=2]
 [ext_resource path="res://scenes/Project.gd" type="Script" id=3]
+[ext_resource path="res://assets/icons/new_window_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=4]
+[ext_resource path="res://assets/icons/file_open_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=5]
+[ext_resource path="res://assets/icons/download_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=6]
+[ext_resource path="res://assets/icons/logout_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=7]
+[ext_resource path="res://assets/icons/add_circle_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=8]
+[ext_resource path="res://assets/icons/autorenew_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=9]
+[ext_resource path="res://assets/icons/share_off_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=10]
+[ext_resource path="res://assets/icons/format_paint_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=11]
+[ext_resource path="res://assets/icons/pageview_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=12]
+[ext_resource path="res://assets/icons/edit_FILL0_wght700_GRAD-25_opsz48.png" type="Texture" id=13]
 
 [sub_resource type="ButtonGroup" id=1]
 
@@ -14,39 +24,57 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 0, 0, 0, 1 )
 
-[node name="Main" type="Control"]
+[node name="Main" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
 
 [node name="ProjectOptions" type="HBoxContainer" parent="."]
 anchor_right = 1.0
+margin_left = 4.0
+margin_top = 6.0
 
 [node name="New" type="Button" parent="ProjectOptions"]
-margin_right = 40.0
-margin_bottom = 20.0
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+hint_tooltip = "Create a New Project"
 disabled = true
-text = "New"
+icon = ExtResource( 4 )
+icon_align = 1
+expand_icon = true
 
 [node name="Open" type="Button" parent="ProjectOptions"]
-margin_left = 44.0
-margin_right = 91.0
-margin_bottom = 20.0
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+hint_tooltip = "Open a Project"
 disabled = true
-text = "Open"
+icon = ExtResource( 5 )
+icon_align = 1
+expand_icon = true
 
 [node name="Save" type="Button" parent="ProjectOptions"]
-margin_left = 95.0
-margin_right = 136.0
-margin_bottom = 20.0
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+hint_tooltip = "Save this Project"
 disabled = true
-text = "Save"
+icon = ExtResource( 6 )
+icon_align = 1
+expand_icon = true
 
 [node name="Exit" type="Button" parent="ProjectOptions"]
-margin_left = 140.0
-margin_right = 175.0
-margin_bottom = 20.0
-text = "Exit"
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+hint_tooltip = "Exit Flowsheet"
+icon = ExtResource( 7 )
+icon_align = 1
+expand_icon = true
 
 [node name="Project" type="Control" parent="."]
 anchor_right = 1.0
@@ -64,28 +92,37 @@ grow_horizontal = 2
 alignment = 1
 
 [node name="Edit" type="Button" parent="Project/ModeOptions"]
-margin_right = 36.0
-margin_bottom = 40.0
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "Edit the flowsheet"
 toggle_mode = true
 pressed = true
 group = SubResource( 1 )
-text = "Edit"
+icon = ExtResource( 13 )
+icon_align = 1
 
 [node name="View" type="Button" parent="Project/ModeOptions"]
-margin_left = 40.0
-margin_right = 82.0
-margin_bottom = 40.0
+margin_left = 68.0
+margin_right = 132.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "View and test the flowsheet"
 toggle_mode = true
 group = SubResource( 1 )
-text = "View"
+icon = ExtResource( 12 )
+icon_align = 1
 
 [node name="Style" type="Button" parent="Project/ModeOptions"]
-margin_left = 86.0
-margin_right = 129.0
-margin_bottom = 40.0
+margin_left = 136.0
+margin_right = 200.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "Style the flowsheet"
 toggle_mode = true
 group = SubResource( 1 )
-text = "Style"
+icon = ExtResource( 11 )
+icon_align = 1
 
 [node name="Container" type="ScrollContainer" parent="Project"]
 anchor_right = 1.0
@@ -131,15 +168,33 @@ margin_right = 984.0
 margin_bottom = -474.0
 
 [node name="AddNode" type="Button" parent="Project/EditActions"]
-margin_right = 75.0
-margin_bottom = 20.0
-text = "Add Node"
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 2 )
+hint_tooltip = "Add a new node"
+icon = ExtResource( 8 )
+icon_align = 1
+expand_icon = true
 
 [node name="Recalculate" type="Button" parent="Project/EditActions"]
-margin_left = 79.0
-margin_right = 210.0
-margin_bottom = 20.0
-text = "Recalculate Values"
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+hint_tooltip = "Recalculate node values"
+icon = ExtResource( 9 )
+icon_align = 1
+expand_icon = true
+
+[node name="Button" type="Button" parent="Project/EditActions"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+hint_tooltip = "Toggle link visibility"
+icon = ExtResource( 10 )
+icon_align = 1
+expand_icon = true
 
 [node name="UndoStack" type="Node" parent="Project"]
 

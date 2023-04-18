@@ -7,6 +7,7 @@ onready var project := $Project as Control
 
 
 func _ready() -> void:
+	OS.window_maximized = true
 	project.flowsheet = FlowSheet.new()
 	project.refresh()
 

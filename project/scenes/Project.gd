@@ -126,7 +126,7 @@ func _add_link(source_node: Control, target_node: Control) -> void:
 	link.connect("formula_changed", self, "_propogate", [target_node])
 	
 	_graph.connect_nodes(source_node.node.id, target_node.node.id)
-	target_node.set_input_node(false)
+#	target_node.set_input_node(false)
 
 
 func _delete_link(link: Control) -> void:

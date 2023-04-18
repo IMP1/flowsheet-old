@@ -1,5 +1,9 @@
 # Roadmap
 
+## Known Issues
+
+  - [ ] Edit menu for a node is drawn underneath other control elements (either need to be a canvas layer or dynamically created in a menu layer of the canvas...)
+
 ## v0.1.0 - 'The Flow'
 
   - [X] User can add nodes
@@ -66,11 +70,6 @@
   - [ ] Flowsheet has an about page including a version number, and a link to the Github page
   - [ ] Flowsheet remembers which project the user had open last, and will open it on loading
   - [ ] 
-
-# Known Issues
-
-  - [ ] Edit menu for a node is drawn underneath other control elements (either need to be a canvas layer or dynamically created in a menu layer of the canvas...)
-
 
 # Bonus Extras
 
