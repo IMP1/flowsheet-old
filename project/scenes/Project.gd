@@ -89,6 +89,7 @@ func add_node(pos: Vector2) -> void:
 	node.connect("end_connection", self, "_add_link")
 	node.connect("initial_value_changed", self, "_propogate", [node])
 	node.connect("type_changed", self, "_propogate", [node])
+	node.connect("reorder_links", self, "_reorder_links", [node])
 	
 	_graph.add_node(id)
 
@@ -145,3 +146,8 @@ func _input(event: InputEvent) -> void:
 			n.stop_connection()
 	if event.is_action_pressed("ui_focus_next"):
 		_graph.dump()
+
+func _reorder_links(target_node: Control) -> void:
+	print("reordering links going into node %d" % target_node.node.id)
+	# TODO: If there are more than 1 incoming link, then spread them out and make them swappable
+	#       And if the mouse moves too far away, stop this

@@ -6,13 +6,14 @@ signal type_changed()
 signal initial_value_changed()
 signal start_connection()
 signal end_connection()
+signal reorder_links()
 
 var node: FlowNode
 
 onready var _edit := $Edit as Control
 onready var _view := $View as Control
 onready var _style := $Style as Control
-onready var _input := $InitalValue as Control
+onready var _input := $InitalValue as FlowsheetNodeInput
 onready var _connection_in := $Edit/ConnectIn as FlowsheetNodeConnector
 onready var _connection_out := $Edit/ConnectOut as FlowsheetNodeConnector
 onready var _node_info := $Edit/EditMenu/NodeInfo as Label
@@ -22,7 +23,7 @@ func _ready():
 	set_mode(0)
 	_node_info.text = "Node ID: %d" % node.id
 	_connection_in.node = self
-	_connection_in.is_output_connector = false
+	_connection_in.is_incoming_connector = true
 	_connection_out.node = self
 	_connection_out.accept_incoming = false
 	_input.set_type(node.type)
@@ -96,6 +97,10 @@ func _start_connection() -> void:
 
 func _end_connection(source, target) -> void:
 	emit_signal("end_connection", source, target)
+
+
+func _reorder_links() -> void:
+	emit_signal("reorder_links")
 
 
 func prepare_for_connection() -> void:

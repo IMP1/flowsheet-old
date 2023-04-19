@@ -96,6 +96,7 @@ margin_top = -12.0
 margin_right = 32.0
 margin_bottom = 12.0
 custom_styles/panel = SubResource( 2 )
+is_incoming_connector = false
 
 [node name="ConnectIn" parent="Edit" instance=ExtResource( 5 )]
 anchor_top = 0.5
@@ -238,6 +239,7 @@ script = ExtResource( 4 )
 [connection signal="pressed" from="Edit/DragHandle" to="Edit" method="_toggle_edit_menu"]
 [connection signal="start_connection" from="Edit/ConnectOut" to="." method="_start_connection"]
 [connection signal="end_connection" from="Edit/ConnectIn" to="." method="_end_connection"]
+[connection signal="reorder_links" from="Edit/ConnectIn" to="." method="_reorder_links"]
 [connection signal="toggled" from="Edit/EditMenu/Editable/Value" to="." method="_editable_changed"]
 [connection signal="item_selected" from="Edit/EditMenu/Type/ChangeType" to="." method="_type_changed"]
 [connection signal="pressed" from="Edit/EditMenu/HBoxContainer/Delete" to="." method="_deleted"]

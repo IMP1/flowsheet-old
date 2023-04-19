@@ -1,4 +1,5 @@
 extends Control
+class_name FlowsheetNodeInput
 
 signal value_changed(new_value)
 
