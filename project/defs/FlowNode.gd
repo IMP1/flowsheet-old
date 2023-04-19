@@ -24,3 +24,20 @@ static func default_value(type: int):
 			return ""
 	print("INVALID TYPE")
 	return null
+
+static func to_text(value, type: int) -> String:
+	match type:
+		Type.BOOL: # Switch
+			return "ON" if value else "OFF"
+		Type.INT: # Integer
+			return "%d" % value
+		Type.DECIMAL: # Decimal
+			return "%.2f" % value
+		Type.PERCENTAGE: # Percentage
+			return "%.1f%%" % (value * 100.0)
+		Type.SHORT_TEXT: # Short Text
+			return "'%s'" % value
+		Type.LONG_TEXT: # Long Text
+			return "'%s'" % value
+	print("INVALID TYPE")
+	return "???"

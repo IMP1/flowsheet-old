@@ -7,29 +7,35 @@ signal initial_value_changed()
 signal start_connection()
 signal end_connection()
 
-export(Resource) var node
+var node: FlowNode
 
 onready var _edit := $Edit as Control
 onready var _view := $View as Control
 onready var _style := $Style as Control
+onready var _input := $InitalValue as Control
+onready var _connection_in := $Edit/ConnectIn as FlowsheetNodeConnector
+onready var _connection_out := $Edit/ConnectOut as FlowsheetNodeConnector
+onready var _node_info := $Edit/EditMenu/NodeInfo as Label
 
 
 func _ready():
 	set_mode(0)
-	$Edit/EditMenu/NodeInfo.text = "Node ID: %d" % node.id
-	$Edit/Value/Label.text = str(node.value)
-	$Edit/ConnectOut.node = self
-	$Edit/ConnectOut.accept_incoming = false
-	$Edit/ConnectIn.node = self
-	_edit._new_type_selected(node.type)
+	_node_info.text = "Node ID: %d" % node.id
+	_connection_in.node = self
+	_connection_in.is_output_connector = false
+	_connection_out.node = self
+	_connection_out.accept_incoming = false
+	_input.set_type(node.type)
+	_view.editable = node.accepts_input
+	set_value(node.value)
 
 
 func connection_point_out() -> Vector2:
-	return rect_position + $Edit/ConnectOut.rect_position + $Edit/ConnectOut.rect_size / 2
+	return rect_position + _connection_out.rect_position + _connection_out.rect_size / 2
 
 
 func connection_point_in() -> Vector2:
-	return rect_position + $Edit/ConnectIn.rect_position + $Edit/ConnectIn.rect_size / 2
+	return rect_position + _connection_in.rect_position + _connection_in.rect_size / 2
 
 
 func set_mode(mode: int) -> void:
@@ -68,20 +74,20 @@ func _move_to(position: Vector2) -> void:
 func _type_changed(new_type: int) -> void:
 	node.type = new_type
 	node.initial_value = FlowNode.default_value(new_type)
+	_input.set_type(new_type)
+	_edit.set_initial_value(node.initial_value, node.type)
 	emit_signal("type_changed")
 
 
 func _initial_value_changed(new_value) -> void:
-	print("initial value changed for node #%d" % node.id)
 	node.initial_value = new_value
+	_edit.set_initial_value(node.initial_value, node.type)
 	emit_signal("initial_value_changed")
-	_view.input.value = new_value # TODO: This won't work with all node types
-	_edit.value_setter.value = new_value # TODO: This won't work with all node types
 
 
 func _editable_changed(new_value: bool) -> void:
 	node.accepts_input = new_value
-	_view._set_editable(new_value)
+	_view.editable = node.accepts_input
 
 
 func _start_connection() -> void:
@@ -93,16 +99,16 @@ func _end_connection(source, target) -> void:
 
 
 func prepare_for_connection() -> void:
-	$Edit/ConnectIn.highlight()
+	_connection_in.highlight()
 
 
 func stop_connection() -> void:
 	yield(get_tree(), "idle_frame")
-	$Edit/ConnectIn.reset()
-	$Edit/ConnectOut.reset()
+	_connection_in.reset()
+	_connection_out.reset()
 
 
 func set_value(value) -> void:
 	node.value = value
-	$Edit/Value/Label.text = str(value)
+	_edit.set_value(value)
 	_view.set_value(value)

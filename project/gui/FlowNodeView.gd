@@ -1,56 +1,22 @@
 extends Control
 
-var active: bool = false
-var editable: bool = false setget _set_editable
+var editable: bool = true
+var active: bool = false setget _set_active
 
-onready var input := $Input as Control
-onready var output := $Label as Control
+export(NodePath) var input
 
-
-func _set_editable(val: bool) -> void:
-	output.visible = (not val)
-	input.visible = val
+onready var _input := get_node(input) as Control
+onready var _output := $Label as Control
 
 
-func set_type(type: int) -> void:
-	var parent: Control = input.get_parent()
-	parent.remove_child(input)
-	match type:
-		FlowNode.Type.BOOL: # Switch
-			input = CheckButton.new()
-			input.connect("toggled", self, "_initial_value_set")
-		FlowNode.Type.INT: # Integer
-			input = SpinBox.new()
-			input.allow_greater = true
-			input.allow_lesser = true
-			input.rounded = true
-			input.connect("value_changed", self, "_initial_value_set")
-		FlowNode.Type.DECIMAL: # Decimal
-			input = SpinBox.new()
-			input.allow_greater = true
-			input.allow_lesser = true
-			input.step = 0.01
-			input.connect("value_changed", self, "_initial_value_set")
-		FlowNode.Type.PERCENTAGE: # Percentage
-			input = HSlider.new()
-			input.max_value = 1.0
-			input.min_value = 0.0
-			input.step = 0.01
-			input.connect("value_changed", self, "_initial_value_set")
-		FlowNode.Type.SHORT_TEXT: # Short Text
-			input = LineEdit.new()
-			input.connect("text_changed", self, "_initial_value_set")
-		FlowNode.Type.LONG_TEXT:
-			input = LineEdit.new()
-			input.connect("text_changed", self, "_initial_value_set")
-		_: # Other
-			print("INVALID NODE TYPE")
-	parent.add_child(input)
-	parent.move_child(input, 0)
-	input.anchor_right = 1.0
-	input.anchor_bottom = 1.0
+func _set_active(value: bool) -> void:
+	active = value
+	if active:
+		_input.visible = editable
+		_output.visible = (not editable)
+	else:
+		_input.visible = true
 
 
 func set_value(value) -> void:
-	output.text = str(value)
-
+	_output.text = str(value)

@@ -3,6 +3,7 @@
 ## Known Issues
 
   - [ ] Edit menu for a node is drawn underneath other control elements (either need to be a canvas layer or dynamically created in a menu layer of the canvas...)
+  - [X] Setting a node's type will crash as there's a change in type and the value can't be set to the new input node
 
 ## v0.1.0 - 'The Flow'
 

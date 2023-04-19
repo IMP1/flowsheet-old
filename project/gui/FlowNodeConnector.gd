@@ -1,4 +1,5 @@
 extends Panel
+class_name FlowsheetNodeConnector
 
 # Using this reference: https://www.reddit.com/r/godot/comments/7ystqs/drag_and_drop/
 
@@ -7,8 +8,9 @@ signal end_connection
 
 export var highlight_colour: Color = Color.red
 export var accept_incoming: bool = false
+export var is_output_connector: bool = true
 
-var node
+var node: Control
 var _previous_border_colour: Color
 
 onready var panel := get("custom_styles/panel") as StyleBoxFlat
@@ -28,10 +30,13 @@ func highlight() -> void:
 
 
 func get_drag_data(_position):
-	emit_signal("start_connection")
-	_previous_border_colour = panel.border_color
-	panel.border_color = highlight_colour
-	return node
+	if is_output_connector:
+		emit_signal("start_connection")
+		_previous_border_colour = panel.border_color
+		panel.border_color = highlight_colour
+		return node
+	else:
+		return null
 
 
 func can_drop_data(_position, data):

@@ -39,6 +39,7 @@ margin_right = 32.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 hint_tooltip = "Create a New Project"
+mouse_default_cursor_shape = 2
 disabled = true
 icon = ExtResource( 4 )
 icon_align = 1
@@ -50,6 +51,7 @@ margin_right = 68.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 hint_tooltip = "Open a Project"
+mouse_default_cursor_shape = 2
 disabled = true
 icon = ExtResource( 5 )
 icon_align = 1
@@ -61,6 +63,7 @@ margin_right = 104.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 hint_tooltip = "Save this Project"
+mouse_default_cursor_shape = 2
 disabled = true
 icon = ExtResource( 6 )
 icon_align = 1
@@ -72,6 +75,7 @@ margin_right = 140.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 hint_tooltip = "Exit Flowsheet"
+mouse_default_cursor_shape = 2
 icon = ExtResource( 7 )
 icon_align = 1
 expand_icon = true
@@ -79,8 +83,10 @@ expand_icon = true
 [node name="Project" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 28.0
+margin_top = 44.0
 script = ExtResource( 3 )
+
+[node name="UndoStack" type="Node" parent="Project"]
 
 [node name="ModeOptions" type="HBoxContainer" parent="Project"]
 anchor_left = 0.5
@@ -96,6 +102,7 @@ margin_right = 64.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "Edit the flowsheet"
+mouse_default_cursor_shape = 2
 toggle_mode = true
 pressed = true
 group = SubResource( 1 )
@@ -108,6 +115,7 @@ margin_right = 132.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "View and test the flowsheet"
+mouse_default_cursor_shape = 2
 toggle_mode = true
 group = SubResource( 1 )
 icon = ExtResource( 12 )
@@ -119,10 +127,49 @@ margin_right = 200.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "Style the flowsheet"
+mouse_default_cursor_shape = 2
 toggle_mode = true
 group = SubResource( 1 )
 icon = ExtResource( 11 )
 icon_align = 1
+
+[node name="EditActions" type="HBoxContainer" parent="Project"]
+margin_left = 36.0
+margin_top = 77.0
+margin_right = 984.0
+margin_bottom = 109.0
+
+[node name="AddNode" type="Button" parent="Project/EditActions"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 2 )
+hint_tooltip = "Add a new node"
+mouse_default_cursor_shape = 2
+icon = ExtResource( 8 )
+icon_align = 1
+expand_icon = true
+
+[node name="Recalculate" type="Button" parent="Project/EditActions"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+hint_tooltip = "Recalculate node values"
+mouse_default_cursor_shape = 2
+icon = ExtResource( 9 )
+icon_align = 1
+expand_icon = true
+
+[node name="ToggleLinks" type="Button" parent="Project/EditActions"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+hint_tooltip = "Toggle link visibility"
+mouse_default_cursor_shape = 2
+icon = ExtResource( 10 )
+icon_align = 1
+expand_icon = true
 
 [node name="Container" type="ScrollContainer" parent="Project"]
 anchor_right = 1.0
@@ -138,7 +185,7 @@ follow_focus = true
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 986.0
-margin_bottom = 435.0
+margin_bottom = 419.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -161,42 +208,10 @@ default_color = Color( 1, 1, 1, 1 )
 joint_mode = 2
 begin_cap_mode = 2
 
-[node name="EditActions" type="HBoxContainer" parent="Project"]
-margin_left = 36.0
-margin_top = 77.0
-margin_right = 984.0
-margin_bottom = -474.0
-
-[node name="AddNode" type="Button" parent="Project/EditActions"]
-margin_right = 32.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 32, 2 )
-hint_tooltip = "Add a new node"
-icon = ExtResource( 8 )
-icon_align = 1
-expand_icon = true
-
-[node name="Recalculate" type="Button" parent="Project/EditActions"]
-margin_left = 36.0
-margin_right = 68.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
-hint_tooltip = "Recalculate node values"
-icon = ExtResource( 9 )
-icon_align = 1
-expand_icon = true
-
-[node name="Button" type="Button" parent="Project/EditActions"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
-hint_tooltip = "Toggle link visibility"
-icon = ExtResource( 10 )
-icon_align = 1
-expand_icon = true
-
-[node name="UndoStack" type="Node" parent="Project"]
+[node name="Menus" type="Control" parent="Project"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 
 [connection signal="pressed" from="ProjectOptions/New" to="." method="_new_project"]
 [connection signal="pressed" from="ProjectOptions/Open" to="." method="_open_project"]
