@@ -46,6 +46,7 @@
   - [ ] User can undo and redo actions
   - [ ] Flowsheet displays a (toggleable) minimap of the flowsheet in all views
   - [ ] Flowsheet has a toggleable grid, which nodes will (optionally) snap to in EDIT and STYLE mode (both position and size)
+  - [ ] Flowsheet has a debug log, where any errors are printed, which the user can view
 
 ## v0.5.0 - "Style"
 
