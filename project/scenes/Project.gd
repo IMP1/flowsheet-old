@@ -4,6 +4,7 @@ enum EditorMode { EDIT, VIEW, STYLE }
 
 const NODE = preload("res://gui/FlowNode.tscn")
 const LINK = preload("res://gui/FlowLink.tscn")
+const LINK_ORDERING = preload("res://gui/FlowLinkEdit.tscn")
 
 var flowsheet: FlowSheet
 var _next_node_id: int = 1
@@ -14,6 +15,7 @@ onready var canvas := $Container/Flowsheet as Control
 onready var _partial_connection := $Container/Flowsheet/PartialConnection as Line2D
 onready var _nodes := $Container/Flowsheet/Nodes as Control
 onready var _links := $Container/Flowsheet/Links as Control
+onready var _menus := $Menus as Control
 
 
 func _ready() -> void:
@@ -113,10 +115,11 @@ func _start_connection(node: Control) -> void:
 
 
 func _add_link(source_node: Control, target_node: Control) -> void:
+	var existing_link_count := flowsheet.get_incoming_link_count(target_node.node)
 	var link_data := FlowLink.new()
 	link_data.source_id = source_node.node.id
 	link_data.target_id = target_node.node.id
-	link_data.target_ordering = 0 # TODO: Get this somehow
+	link_data.target_ordering = existing_link_count
 	flowsheet.add_link(link_data)
 	
 	var link: Control = LINK.instance()
@@ -127,7 +130,6 @@ func _add_link(source_node: Control, target_node: Control) -> void:
 	link.connect("formula_changed", self, "_propogate", [target_node])
 	
 	_graph.connect_nodes(source_node.node.id, target_node.node.id)
-#	target_node.set_input_node(false)
 
 
 func _delete_link(link: Control) -> void:
@@ -147,7 +149,15 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_focus_next"):
 		_graph.dump()
 
+
 func _reorder_links(target_node: Control) -> void:
-	print("reordering links going into node %d" % target_node.node.id)
-	# TODO: If there are more than 1 incoming link, then spread them out and make them swappable
-	#       And if the mouse moves too far away, stop this
+	var incoming_links = []
+	for link in _links.get_children():
+		if link.target_node == target_node:
+			incoming_links.append(link)
+	if incoming_links.size() < 2:
+		return
+	var ordering := LINK_ORDERING.instance() as Control
+	ordering.links = incoming_links
+	canvas.add_child(ordering)
+	ordering.rect_global_position = _nodes.rect_global_position + target_node.connection_point_in()

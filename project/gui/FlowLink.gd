@@ -7,6 +7,7 @@ export(Color) var selected_colour := Color.royalblue
 export(Color) var no_formula := Color.gray
 export(Color) var invalid_formula := Color.red
 
+const DISTANCE_TO_CLICK = 6
 const SOURCE_NODE_LINE_INDEX = 0
 const TARGET_NODE_LINE_INDEX = 3
 
@@ -14,6 +15,8 @@ var link: FlowLink
 var source_node: Control
 var target_node: Control
 var _is_mouse_over: bool = false
+var override_target_position: bool = false
+var temp_target_offset: Vector2 = Vector2.ZERO
 
 onready var line := $Edit/LineContainer/Line2D as Line2D
 onready var border_line := $Edit/LineContainer/Border as Line2D
@@ -54,13 +57,10 @@ func set_connection(source: Control, target: Control) -> void:
 
 
 func _refresh() -> void:
-#	var middle_point: Vector2 = source_node.connection_point_out()
-#	middle_point += target_node.connection_point_in()
-#	middle_point /= 2
-#	rect_position = middle_point
-#	$Edit/LineContainer.rect_position = -middle_point
 	var source_pos: Vector2 = source_node.connection_point_out() + Vector2(10, 0)
 	var target_pos: Vector2 = target_node.connection_point_in() + Vector2(-10, 0)
+	if override_target_position:
+		target_pos += temp_target_offset
 	line.clear_points()
 	border_line.clear_points()
 	path.curve.clear_points()
@@ -123,6 +123,8 @@ func _delete() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if override_target_position:
+		return
 	if event is InputEventMouseButton and event.pressed:
 		if _is_point_over(path.get_local_mouse_position()):
 			_set_menu_visible(not edit_menu.visible)
@@ -131,4 +133,4 @@ func _input(event: InputEvent) -> void:
 func _is_point_over(point: Vector2) -> bool:
 	var line_pos := path.curve.get_closest_point(point)
 	var distance_squared := (line_pos - point).length_squared()
-	return distance_squared <= 64
+	return distance_squared <= (DISTANCE_TO_CLICK * DISTANCE_TO_CLICK)
